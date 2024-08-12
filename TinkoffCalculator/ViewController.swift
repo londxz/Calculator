@@ -51,7 +51,7 @@ enum Operation: String {
     }
 }
 
-enum CalculationHistoryItem {
+enum CalculationHistoryItem: Equatable {
     case number(Double)
     case operation(Operation)
 }
@@ -78,19 +78,24 @@ class ViewController: UIViewController {
     }
     
     @IBAction func operationButtonPressed(_ sender: UIButton) {
+        
+        if flagOperationPressed == true { return }
         guard
             let buttonText = sender.currentTitle, // присвоили строку кнопки
             let buttonOperation = Operation(rawValue: buttonText) // присвоили операцию
         else { return }
+        
         guard
             let labelText = label.text, // из кнопки делаем строку-число
-            let labelNumber = numberFormatter.number(from: labelText)?.doubleValue // привели строку к числу
+            var labelNumber = numberFormatter.number(from: labelText)?.doubleValue // привели строку к числу
         else { return }
+        
         calculationHistoryItem.append(.number(labelNumber))
         calculationHistoryItem.append(.operation(buttonOperation))
-        //print("add \(labelNumber)")
-        //print("add \(buttonOperation)")
+        print("add \(labelNumber)")
+        print("add \(buttonOperation)")
         label.text = labelText
+        
         flagOperationPressed = true
     }
     
@@ -108,7 +113,7 @@ class ViewController: UIViewController {
         else { return }
         
         calculationHistoryItem.append(.number(labelNumber))
-        //print("add \(labelNumber)")
+        print("add \(labelNumber)")
         
         do {
             let result = try calculate()
@@ -153,7 +158,7 @@ class ViewController: UIViewController {
                 case .number(let number) = calculationHistoryItem[index + 1]
             else { break }
             currentResult = try operation.calculate(currentResult, number)
-            //print("counted \(currentResult)")
+            print("counted \(currentResult)")
         }
         return currentResult
     }
