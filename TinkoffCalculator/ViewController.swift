@@ -5,7 +5,6 @@
 //  Created by Родион Холодов on 10.08.2024.
 //
 
-import Darwin
 import UIKit
 
 class Stack<T: Equatable> {
@@ -90,6 +89,8 @@ class Stack<T: Equatable> {
         
         @IBAction func buttonPressed(_ sender: UIButton) {
             guard let buttonText = sender.currentTitle else { return }
+            
+            if label.text == "Error :c" { resetLabelText() }
             
             if flagOperationPressed == true {
                 resetLabelText()
